@@ -12,11 +12,13 @@ class Cashier:
         total = dollars * 1.0 + half_dollars * 0.5 + quarters * 0.25 + nickels * 0.05
         return total
 
-    def transaction_result(self, payment, cost):
-        if payment < cost:
+
+    def transaction_result(self, coins, cost):
+
+        if coins < cost:
             print("Sorry that's not enough money. Money refunded.")
             return False
-        change = round(payment - cost, 2)
+        change = round(coins - cost, 2)
         if change > 0:
             print(f"Here is ${change} in change.")
         return True

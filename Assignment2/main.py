@@ -7,7 +7,7 @@ import sandwich_maker
 resources = data.resources
 recipes = data.recipes
 sandwich_maker_instance = sandwich_maker.SandwichMaker(resources)
-cashier_instance = cashier.Cashier
+cashier_instance = cashier.Cashier()
 
 
 
@@ -28,9 +28,9 @@ def main():
         elif request in recipes:
             sandwich = recipes[request]
             if sandwich_maker_instance.check_resources(sandwich["ingredients"]):
-                payment = cashier_instance.process_coins
+                total = cashier_instance.process_coins()
 
-                if cashier_instance.transaction_result(payment, sandwich["cost"]):
+                if cashier_instance.transaction_result(total, sandwich["cost"]):
                     sandwich_maker_instance.make_sandwich(request, sandwich["ingredients"])
 
         else:

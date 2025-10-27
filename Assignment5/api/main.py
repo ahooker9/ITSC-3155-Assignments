@@ -158,3 +158,37 @@ def delete_one_recipe(recipe_id: int, db: Session = Depends(get_db)):
     if recipe is None:
         raise HTTPException(status_code=404, detail="User not found")
     return recipes.delete(db=db, recipe_id=recipe_id)
+
+
+@app.post("/order_details/", response_model=schemas.OrderDetail, tags=["OrderDetails"])
+def create_details(detail: schemas.OrderDetailCreate, db: Session = Depends(get_db)):
+    return detail.create(db=db, detail=detail)
+
+
+@app.get("/order_details/", response_model=list[schemas.OrderDetail], tags=["OrderDetails"])
+def read_details(db: Session = Depends(get_db)):
+    return order_details.read_all(db)
+
+
+@app.get("/order_details/{detail_id}", response_model=schemas.OrderDetail, tags=["OrderDetails"])
+def read_one_detail(detail_id: int, db: Session = Depends(get_db)):
+    detail = order_details.read_one(db, detail_id=detail_id)
+    if detail is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return detail
+
+
+@app.put("/order_details/{detail_id}", response_model=schemas.OrderDetail, tags=["OrderDetails"])
+def update_one_detail(detail_id: int, resource: schemas.OrderDetailUpdate, db: Session = Depends(get_db)):
+    detail_db = order_details.read_one(db, detail_id=detail_id)
+    if detail_db is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return order_details.update(db=db, detail=detail, detail_id=detail_id)
+
+
+@app.delete("/order_details/{detail_id}", tags=["OrderDetails"])
+def delete_one_detail(detail_id: int, db: Session = Depends(get_db)):
+    detail = order_details.read_one(db, detail_id=detail_id)
+    if detail is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return order_details.delete(db=db, detail_id=detail_id)
